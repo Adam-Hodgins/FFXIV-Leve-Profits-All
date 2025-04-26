@@ -414,9 +414,19 @@
             if (val === null || val === undefined || val === "") {
               html += "<td></td>";
             } else {
-              // Special handling for Leve Name to ensure it's treated as a string
+              // Special handling for Leve Name to add link
               if (key === "Leve Name") {
-                html += `<td>${String(val)}</td>`;
+                // Convert the Leve Name to a URL-friendly format
+                const leveName = String(val);
+                const urlName = leveName
+                  .replace(/'/g, '%27') // Replace apostrophes with %27
+                  .replace(/"/g, '') // Remove double quotes
+                  .replace(/[^\w\s-%27]/g, '') // Remove special characters except spaces, hyphens, and %27
+                  .replace(/\s+/g, '_') // Replace spaces with underscores
+                  .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+                  .trim();
+                
+                html += `<td><a href="https://ffxiv.consolegameswiki.com/wiki/${urlName}" target="_blank" rel="noopener noreferrer">${leveName}</a></td>`;
               } else {
                 // round numbers where appropriate
                 const n = parseFloat(val);
