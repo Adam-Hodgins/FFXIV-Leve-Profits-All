@@ -1,6 +1,7 @@
-Update fetch script to fetch for every world, not just one
-Update fetch script to store the files by their world name
-New (probably JS/React) to display the excel files as a webpage (Select world via dropdown, select profession via drop down, display correct table)
-Create cron job to run the fetch script every 15 minutes
-Display last fetch time on the web page
-Display next fetch time on the web page
+Display last fetch time on page
+Display next fetch time on page
+Add Warning about periodic failing of API calls until solved
+Table Reordering
+Column Hiding
+Dark Mode
+Save and Read Local Storage for 'persistence'
