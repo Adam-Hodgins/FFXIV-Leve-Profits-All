@@ -1,9 +1,13 @@
 name: Scheduled Master Runner
 
+# Grant write access so we can push updated Sheets/
+permissions:
+  contents: write
+
 on:
-  workflow_dispatch:      # manual trigger
+  workflow_dispatch:
   schedule:
-    - cron: '*/15 * * * *' # every 15 minutes
+    - cron: '*/15 * * * *'  # every 15 minutes
 
 concurrency:
   group: master-script
@@ -19,7 +23,6 @@ jobs:
         with:
           # allow the GITHUB_TOKEN to push back
           persist-credentials: true
-          # fetch full history to allow git diff
           fetch-depth: 0
 
       - name: Set up Python
@@ -38,16 +41,16 @@ jobs:
       - name: Commit & push updated Sheets
         shell: bash
         run: |
-          # configure git user
+          # configure git for the bot
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
+          
           # stage changes
           git add Sheets/
 
-          # only commit if there are changes
+          # commit + push if there are changes
           if git diff --cached --quiet; then
-            echo "No changes in Sheets/, skipping commit."
+            echo "No changes to commit"
           else
             git commit -m "chore: update Sheets via scheduled runner"
             git push
