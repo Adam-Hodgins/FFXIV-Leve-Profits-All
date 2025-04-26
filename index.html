@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Leve Profits Explorer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #00bcd4;
+        --primary-dark: #0097a7;
+        --bg: #f9f9f9;
+        --text: #333;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; padding: 0;
+        font-family: "Poppins", sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+      }
+      .container {
+        max-width: 1200px; margin: 0 auto; padding: 20px;
+      }
+      header { text-align: center; margin-bottom: 30px; }
+      header h1 { font-weight: 600; color: var(--primary-dark); margin: 0; }
+
+      .controls {
+        display: flex; justify-content: center;
+        gap: 1rem; margin-bottom: 20px;
+      }
+      .controls label { font-weight: 500; }
+      .controls select {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: #fff;
+        transition: border-color 0.3s;
+      }
+      .controls select:focus {
+        border-color: var(--primary); outline: none;
+      }
+
+      .table-wrapper {
+        display: flex; justify-content: center;
+      }
+      .table-wrapper table {
+        width: auto; max-width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      th, td {
+        padding: 12px 15px; text-align: left;
+      }
+      th {
+        background: var(--primary);
+        color: #fff;
+        cursor: pointer;
+        user-select: none;
+        position: relative;
+        transition: background 0.3s;
+      }
+      th:hover { background: var(--primary-dark); }
+      th.sort-asc::after { content: " ▲"; }
+      th.sort-desc::after { content: " ▼"; }
+
+      tr:nth-child(even) { background: #f2f2f2; }
+      tr:hover { background: #e0f7fa; }
+
+      .empty {
+        text-align: center; color: #777; padding: 20px;
+      }
+      .error {
+        color: #e53935; text-align: center; margin-top: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <h1>Leve Profits Explorer</h1>
+      </header>
+
+      <div class="controls">
+        <label>
+          World:
+          <select id="worldSelect">
+            <option value="">– select –</option>
+            <option value="Adamantoise">Adamantoise</option>
+            <option value="Cactuar">Cactuar</option>
+            <option value="Faerie">Faerie</option>
+            <option value="Gilgamesh">Gilgamesh</option>
+            <option value="Jenova">Jenova</option>
+            <option value="Midgardsormr">Midgardsormr</option>
+            <option value="Sargatanas">Sargatanas</option>
+            <option value="Siren">Siren</option>
+            <option value="Balmung">Balmung</option>
+            <option value="Brynhildr">Brynhildr</option>
+            <option value="Coeurl">Coeurl</option>
+            <option value="Diabolos">Diabolos</option>
+            <option value="Goblin">Goblin</option>
+            <option value="Malboro">Malboro</option>
+            <option value="Mateus">Mateus</option>
+            <option value="Zalera">Zalera</option>
+            <option value="Behemoth">Behemoth</option>
+            <option value="Excalibur">Excalibur</option>
+            <option value="Exodus">Exodus</option>
+            <option value="Famfrit">Famfrit</option>
+            <option value="Hyperion">Hyperion</option>
+            <option value="Lamia">Lamia</option>
+            <option value="Leviathan">Leviathan</option>
+            <option value="Ultros">Ultros</option>
+            <option value="Halicarnassus">Halicarnassus</option>
+            <option value="Maduin">Maduin</option>
+            <option value="Marilith">Marilith</option>
+            <option value="Seraph">Seraph</option>
+            <option value="Cuchulainn">Cuchulainn</option>
+            <option value="Golem">Golem</option>
+            <option value="Kraken">Kraken</option>
+            <option value="Rafflesia">Rafflesia</option>
+            <option value="Cerberus">Cerberus</option>
+            <option value="Louisoix">Louisoix</option>
+            <option value="Moogle">Moogle</option>
+            <option value="Omega">Omega</option>
+            <option value="Phantom">Phantom</option>
+            <option value="Ragnarok">Ragnarok</option>
+            <option value="Sagittarius">Sagittarius</option>
+            <option value="Spriggan">Spriggan</option>
+            <option value="Alpha">Alpha</option>
+            <option value="Lich">Lich</option>
+            <option value="Odin">Odin</option>
+            <option value="Phoenix">Phoenix</option>
+            <option value="Raiden">Raiden</option>
+            <option value="Shiva">Shiva</option>
+            <option value="Twintania">Twintania</option>
+            <option value="Zodiark">Zodiark</option>
+            <option value="Innocence">Innocence</option>
+            <option value="Pixie">Pixie</option>
+            <option value="Titania">Titania</option>
+            <option value="Tycoon">Tycoon</option>
+            <option value="Aegis">Aegis</option>
+            <option value="Atomos">Atomos</option>
+            <option value="Carbuncle">Carbuncle</option>
+            <option value="Garuda">Garuda</option>
+            <option value="Gungnir">Gungnir</option>
+            <option value="Kujata">Kujata</option>
+            <option value="Tonberry">Tonberry</option>
+            <option value="Typhon">Typhon</option>
+            <option value="Alexander">Alexander</option>
+            <option value="Bahamut">Bahamut</option>
+            <option value="Durandal">Durandal</option>
+            <option value="Fenrir">Fenrir</option>
+            <option value="Ifrit">Ifrit</option>
+            <option value="Ridill">Ridill</option>
+            <option value="Tiamat">Tiamat</option>
+            <option value="Ultima">Ultima</option>
+            <option value="Anima">Anima</option>
+            <option value="Asura">Asura</option>
+            <option value="Chocobo">Chocobo</option>
+            <option value="Hades">Hades</option>
+            <option value="Ixion">Ixion</option>
+            <option value="Masamune">Masamune</option>
+            <option value="Pandaemonium">Pandaemonium</option>
+            <option value="Titan">Titan</option>
+            <option value="Belias">Belias</option>
+            <option value="Mandragora">Mandragora</option>
+            <option value="Ramuh">Ramuh</option>
+            <option value="Shinryu">Shinryu</option>
+            <option value="Unicorn">Unicorn</option>
+            <option value="Valefor">Valefor</option>
+            <option value="Yojimbo">Yojimbo</option>
+            <option value="Zeromus">Zeromus</option>
+            <option value="Bismarck">Bismarck</option>
+            <option value="Ravana">Ravana</option>
+            <option value="Sephirot">Sephirot</option>
+            <option value="Sophia">Sophia</option>
+            <option value="Zurvan">Zurvan</option>            
+            <!-- … -->
+          </select>
+        </label>
+
+        <label>
+          Job:
+          <select id="jobSelect" disabled>
+            <option value="">– select –</option>
+            <option value="ALC">ALC</option>
+            <option value="ARM">ARM</option>
+            <option value="BSM">BSM</option>
+            <option value="CRP">CRP</option>
+            <option value="CUL">CUL</option>
+            <option value="GSM">GSM</option>
+            <option value="LTW">LTW</option>
+            <option value="WVR">WVR</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="table-wrapper" id="tableContainer">
+      </div>
+    </div>
+
+    <!-- SheetJS: full library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script>
+      const worldEl = document.getElementById("worldSelect");
+      const jobEl   = document.getElementById("jobSelect");
+      const container = document.getElementById("tableContainer");
+
+      // Column ordering & display aliases
+      const columnOrder = [
+        "Leve Level","Leve Name","Leve Item","Leve Amount","Leve EXP",
+        "Leve Gil","currentAveragePrice","currentAveragePriceHQ",
+        "currentAveragePriceNQ","LevePriceNQ","LeveProfitNQ",
+        "LevePriceHQ","LeveProfitHQ"
+      ];
+      const aliasMap = {
+        "Leve Name":"Name","Leve Level":"Level","Leve Amount":"Amount",
+        "Leve EXP":"EXP","Leve Gil":"Gil",
+        "LevePriceHQ":"Market Price (HQ)","LeveProfitHQ":"Profit (HQ)",
+        "LevePriceNQ":"Market Price (NQ)","LeveProfitNQ":"Profit (NQ)",
+        "Leve Item":"Required Item","Leve Item ID":"Item ID",
+        "currentAveragePrice":"Avg. Price (All)",
+        "currentAveragePriceHQ":"Avg. Price (HQ)",
+        "currentAveragePriceNQ":"Avg. Price (NQ)",
+      };
+
+      let currentData = [];
+      let sortKey = null;
+      let sortAsc = true;
+
+      function clearTable() {
+        container.innerHTML = "";
+        sortKey = null;
+      }
+
+      function renderTable(data) {
+        if (!data.length) {
+          container.innerHTML = '<div class="empty">No records found.</div>';
+          return;
+        }
+
+        const actualKeys = Object.keys(data[0]);
+        const cols = columnOrder.filter(k => actualKeys.includes(k));
+
+        let html = "<table><thead><tr>";
+        cols.forEach(key => {
+          const label = aliasMap[key] || key;
+          html += `<th data-key="${key}">${label}</th>`;
+        });
+        html += "</tr></thead><tbody>";
+
+        data.forEach(row => {
+          html += "<tr>";
+          cols.forEach(key => {
+            let val = row[key];
+            if (val === null || val === undefined || val === "") {
+              html += "<td></td>";
+            } else {
+              // round numbers where appropriate
+              const n = parseFloat(val);
+              html += `<td>${!isNaN(n) ? Math.round(n) : val}</td>`;
+            }
+          });
+          html += "</tr>";
+        });
+
+        html += "</tbody></table>";
+        container.innerHTML = html;
+
+        // Attach sort handlers
+        container.querySelectorAll("th").forEach(th => {
+          const key = th.dataset.key;
+          th.classList.toggle("sort-asc", key===sortKey && sortAsc);
+          th.classList.toggle("sort-desc", key===sortKey && !sortAsc);
+
+          th.addEventListener("click", () => {
+            if (sortKey === key) {
+              sortAsc = !sortAsc;
+            } else {
+              sortKey = key;
+              sortAsc = true;
+            }
+            currentData.sort((a,b) => {
+              const aRaw = a[key] ?? "";
+              const bRaw = b[key] ?? "";
+              const aNum = parseFloat(aRaw) || 0;
+              const bNum = parseFloat(bRaw) || 0;
+
+              if (!isNaN(aNum) && !isNaN(bNum)) {
+                return sortAsc ? aNum - bNum : bNum - aNum;
+              } else {
+                const as = String(aRaw), bs = String(bRaw);
+                return sortAsc ? as.localeCompare(bs) : bs.localeCompare(as);
+              }
+            });
+            renderTable(currentData);
+          });
+        });
+      }
+
+      async function fetchAndShowStatic() {
+        const world = worldEl.value, job = jobEl.value;
+        if (!world || !job) return clearTable();
+
+        try {
+          // 1. Fetch the .xlsx as ArrayBuffer
+          const url = `Sheets/${world}_Profits.xlsx`;
+          const resp = await fetch(url);
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          const buffer = await resp.arrayBuffer();
+
+          // 2. Read via SheetJS
+          const wb = XLSX.read(buffer, { type: 'array' });
+
+          // 3. Grab the sheet by job code
+          const ws = wb.Sheets[job];
+          if (!ws) throw new Error(`Sheet "${job}" not found`);
+
+          // 4. Convert to JSON rows
+          const data = XLSX.utils.sheet_to_json(ws, { defval: '' });
+
+          // 5. Render
+          currentData = data;
+          renderTable(currentData);
+
+        } catch (err) {
+          clearTable();
+          container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+        }
+      }
+
+      function onSelectChange() {
+        jobEl.disabled = !worldEl.value;
+        if (worldEl.value && jobEl.value) {
+          fetchAndShowStatic();
+        } else {
+          clearTable();
+        }
+      }
+
+      worldEl.addEventListener("change", onSelectChange);
+      jobEl.addEventListener("change", onSelectChange);
+    </script>
+  </body>
+</html>

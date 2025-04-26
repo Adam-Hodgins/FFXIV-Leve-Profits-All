@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 SCRIPTS = [
-    'update_leve_prices.py',
+    'multi_world_fetch.py',
     'export.py'
 ]
 
