@@ -47,6 +47,7 @@ jobs:
           
           # stage changes
           git add Sheets/
+          git add SheetsLastUpdate.txt
 
           # commit + push if there are changes
           if git diff --cached --quiet; then
