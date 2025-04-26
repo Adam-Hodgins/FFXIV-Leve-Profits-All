@@ -532,6 +532,15 @@
             currentData.sort((a, b) => {
               const aRaw = a[key] ?? "";
               const bRaw = b[key] ?? "";
+              
+              // Special handling for text columns
+              if (key === "Leve Name" || key === "Leve Item") {
+                const as = String(aRaw).toLowerCase();
+                const bs = String(bRaw).toLowerCase();
+                return sortAsc ? as.localeCompare(bs) : bs.localeCompare(as);
+              }
+              
+              // Handle numeric columns
               const aNum = parseFloat(aRaw) || 0;
               const bNum = parseFloat(bRaw) || 0;
 
