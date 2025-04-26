@@ -7,7 +7,7 @@ permissions:
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 * * * *'  # every hour
+    - cron: '30 */3 * * *'  # every 3.5 hours
 
 concurrency:
   group: master-script
