@@ -1,3 +1,5 @@
+Bug: some cells not getting zeroed out
+Add links to wiki for each leve
 Display last fetch time on page
 Display next fetch time on page
 Add Warning about periodic failing of API calls until solved
