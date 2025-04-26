@@ -15,7 +15,23 @@
         --primary-dark: #0097a7;
         --bg: #f9f9f9;
         --text: #333;
+        --table-bg: #fff;
+        --table-hover: #e0f7fa;
+        --table-even: #f2f2f2;
+        --border: #ccc;
       }
+
+      [data-theme="dark"] {
+        --primary: #00bcd4;
+        --primary-dark: #0097a7;
+        --bg: #1a1a1a;
+        --text: #f0f0f0;
+        --table-bg: #2d2d2d;
+        --table-hover: #1e3a3d;
+        --table-even: #333333;
+        --border: #444;
+      }
+
       * {
         box-sizing: border-box;
       }
@@ -25,6 +41,7 @@
         font-family: "Poppins", sans-serif;
         background-color: var(--bg);
         color: var(--text);
+        transition: background-color 0.3s, color 0.3s;
       }
       .container {
         max-width: 1200px;
@@ -61,15 +78,20 @@
         justify-content: center;
         gap: 1rem;
         margin-bottom: 20px;
+        align-items: center;
       }
       .controls label {
         font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
       }
       .controls select {
         padding: 8px 12px;
-        border: 1px solid #ccc;
+        border: 1px solid var(--border);
         border-radius: 4px;
-        background: #fff;
+        background: var(--table-bg);
+        color: var(--text);
         transition: border-color 0.3s;
       }
       .controls select:focus {
@@ -85,7 +107,7 @@
         width: auto;
         max-width: 100%;
         border-collapse: collapse;
-        background: #fff;
+        background: var(--table-bg);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       }
       th,
@@ -112,10 +134,10 @@
       }
 
       tr:nth-child(even) {
-        background: #f2f2f2;
+        background: var(--table-even);
       }
       tr:hover {
-        background: #e0f7fa;
+        background: var(--table-hover);
       }
 
       .empty {
@@ -127,6 +149,20 @@
         color: #e53935;
         text-align: center;
         margin-top: 20px;
+      }
+      .theme-toggle {
+        margin-left: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        color: var(--text);
+        transition: color 0.3s;
+        display: flex;
+        align-items: center;
+      }
+      .theme-toggle:hover {
+        color: var(--primary);
       }
     </style>
   </head>
@@ -253,6 +289,20 @@
             <option value="WVR">WVR</option>
           </select>
         </label>
+
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.2"></line>
+          </svg>
+        </button>
       </div>
 
       <div class="table-wrapper" id="tableContainer"></div>
@@ -262,6 +312,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
+      const themeToggle = document.getElementById('themeToggle');
+      
+      // Check for saved theme preference or use system preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+
+      // Toggle theme function
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      });
+
       const worldEl = document.getElementById("worldSelect");
       const jobEl = document.getElementById("jobSelect");
       const container = document.getElementById("tableContainer");
@@ -318,7 +386,7 @@
             // Calculate next update time (3.5 hours from last update)
             const lastUpdateDate = new Date(lastUpdate);
             const nextUpdateDate = new Date(lastUpdateDate.getTime() + (3.5 * 60 * 60 * 1000));
-            const nextUpdateStr = nextUpdateDate.toISOString().split('.')[0];
+            const nextUpdateStr = nextUpdateDate.toISOString().split('.')[0].replace('T', ' ');
             nextUpdate.innerHTML = nextUpdateStr;
           });
       }
