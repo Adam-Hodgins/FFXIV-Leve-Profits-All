@@ -120,6 +120,7 @@
     <div class="container">
       <header>
         <h1>Leve Profits Explorer</h1>
+        <h2>Last Update: <b><span id = "timestamp"></span></b></h2>
       </header>
 
       <div class="controls">
@@ -246,6 +247,7 @@
       const worldEl = document.getElementById("worldSelect");
       const jobEl = document.getElementById("jobSelect");
       const container = document.getElementById("tableContainer");
+      const timestamp = document.getElementById("timestamp");
 
       // Column ordering & display aliases
       const columnOrder = [
@@ -288,6 +290,11 @@
         sortKey = null;
       }
 
+      function setLastUpdate(){
+        let lastUpdate = fetch("LastUpdate.txt").then((res) => res.text())
+        timestamp.innerHTML = LastUpdate
+      }
+      setLastUpdate();
       function renderTable(data) {
         if (!data.length) {
           container.innerHTML = '<div class="empty">No records found.</div>';
