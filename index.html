@@ -289,11 +289,13 @@
         container.innerHTML = "";
         sortKey = null;
       }
-
-      function setLastUpdate(){
-        let lastUpdate = fetch("LastUpdate.txt").then((res) => res.text())
-        timestamp.innerHTML = LastUpdate
-      }
+      function setLastUpdate() {
+  fetch("LastUpdate.txt")
+    .then((res) => res.text())
+    .then((lastUpdate) => {
+      timestamp.innerHTML = lastUpdate;
+    });
+}
       setLastUpdate();
       function renderTable(data) {
         if (!data.length) {
