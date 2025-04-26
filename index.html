@@ -411,8 +411,10 @@
           html += "<tr>";
           cols.forEach((key) => {
             let val = row[key];
-            if (val === null || val === undefined || val === "") {
-              html += "<td></td>";
+            
+            // Handle empty values consistently
+            if (val === null || val === undefined || val === "" || val === " " || val === "0") {
+              html += "<td>0</td>";
             } else {
               // Special handling for Leve Name to add link
               if (key === "Leve Name") {
