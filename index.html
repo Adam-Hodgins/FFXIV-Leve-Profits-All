@@ -19,6 +19,7 @@
         --table-hover: #e0f7fa;
         --table-even: #f2f2f2;
         --border: #ccc;
+        --link-color: #0066cc;
       }
 
       [data-theme="dark"] {
@@ -30,6 +31,7 @@
         --table-hover: #1e3a3d;
         --table-even: #333333;
         --border: #444;
+        --link-color: #4da6ff;
       }
 
       * {
@@ -138,6 +140,16 @@
       }
       tr:hover {
         background: var(--table-hover);
+      }
+
+      a {
+        color: var(--link-color);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      a:hover {
+        color: var(--primary);
       }
 
       .empty {
