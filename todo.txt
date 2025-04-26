@@ -1,7 +1,3 @@
-Bug: some cells not getting zeroed out
-Add links to wiki for each leve
-Bug: Add Warning about periodic failing of API calls until solved
-Table Reordering
-Column Hiding
-Save and Read Local Storage for 'persistence'
-Mobile Support - Doesnt work vertically, sometimes works horizontally
+Table Reordering/Customization
+Local Storage Persistence
+Mobile Support - Currently Doesnt work vertically, sometimes works horizontally
