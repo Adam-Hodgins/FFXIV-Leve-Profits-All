@@ -176,6 +176,51 @@
       .theme-toggle:hover {
         color: var(--primary);
       }
+
+      .warning-section {
+        background-color: rgba(229, 57, 53, 0.1);
+        border: 2px solid #e53935;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 20px auto;
+        max-width: 800px;
+      }
+
+      .warning-content {
+        margin-top: 10px;
+        display: none;
+      }
+
+      .warning-content.visible {
+        display: block;
+      }
+
+      .warning-header {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-weight: bold;
+        color: var(--text);
+      }
+
+      .warning-header::before {
+        content: "▶";
+        margin-right: 10px;
+        font-size: 0.8em;
+      }
+
+      .warning-header.expanded::before {
+        content: "▼";
+      }
+
+      .warning-content ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .warning-content li {
+        margin: 5px 0;
+      }
     </style>
   </head>
 
@@ -317,6 +362,15 @@
         </button>
       </div>
 
+      <div class="warning-section" id="warningSection">
+        <div class="warning-header" id="warningHeader">Notice&nbsp;<span style="font-size: 0.7em;">(This application is still a work in progress)</span></div>
+        <div class="warning-content">
+          <ul>
+            <li style="font-size: 0.8em;">At this time, approximately 4% of batched api calls to Universalis fail (batches are 100 leves/batch/job/world); as a result <b>some data may be missing or incorrect.</b></li>
+          </ul>
+        </div>
+      </div>
+
       <div class="table-wrapper" id="tableContainer"></div>
     </div>
 
@@ -325,6 +379,8 @@
 
     <script>
       const themeToggle = document.getElementById('themeToggle');
+      const warningHeader = document.getElementById('warningHeader');
+      const warningContent = document.querySelector('.warning-content');
       
       // Check for saved theme preference or use system preference
       const savedTheme = localStorage.getItem('theme');
@@ -342,6 +398,12 @@
         localStorage.setItem('theme', newTheme);
       });
 
+      // Toggle warning section
+      warningHeader.addEventListener('click', () => {
+        warningContent.classList.toggle('visible');
+        warningHeader.classList.toggle('expanded');
+      });
+      
       const worldEl = document.getElementById("worldSelect");
       const jobEl = document.getElementById("jobSelect");
       const container = document.getElementById("tableContainer");
