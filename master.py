@@ -19,6 +19,7 @@ def run_script(script_name):
         sys.exit(e.returncode)
 
 def update_timestamp():
+    now = datetime.datetime.now(timezone.utc)
     with open ("LastUpdate.txt", "w") as text_file:
         text_file.write(str(now))
     
