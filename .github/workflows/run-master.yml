@@ -1,9 +1,9 @@
 name: Scheduled Master Runner
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:      # manual trigger
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/15 * * * *' # every 15 minutes
 
 concurrency:
   group: master-script
@@ -14,8 +14,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
+      - name: Check out repository
         uses: actions/checkout@v3
+        with:
+          # allow the GITHUB_TOKEN to push back
+          persist-credentials: true
+          # fetch full history to allow git diff
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -24,17 +29,26 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install requests pandas openpyxl
 
       - name: Run master.py
-        run: |
-          cd ${{ github.workspace }}
-          python master.py
+        run: python master.py
 
-      - name: Upload generated Sheets
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: leve-profits-sheets
-          path: Sheets/
+      - name: Commit & push updated Sheets
+        shell: bash
+        run: |
+          # configure git user
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # stage changes
+          git add Sheets/
+
+          # only commit if there are changes
+          if git diff --cached --quiet; then
+            echo "No changes in Sheets/, skipping commit."
+          else
+            git commit -m "chore: update Sheets via scheduled runner"
+            git push
+          fi
