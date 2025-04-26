@@ -34,7 +34,7 @@ jobs:
 
       - name: Upload generated Sheets
         if: success()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: leve-profits-sheets
           path: Sheets/
