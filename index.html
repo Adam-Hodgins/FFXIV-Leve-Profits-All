@@ -414,9 +414,14 @@
             if (val === null || val === undefined || val === "") {
               html += "<td></td>";
             } else {
-              // round numbers where appropriate
-              const n = parseFloat(val);
-              html += `<td>${!isNaN(n) ? Math.round(n) : val}</td>`;
+              // Special handling for Leve Name to ensure it's treated as a string
+              if (key === "Leve Name") {
+                html += `<td>${String(val)}</td>`;
+              } else {
+                // round numbers where appropriate
+                const n = parseFloat(val);
+                html += `<td>${!isNaN(n) ? Math.round(n) : val}</td>`;
+              }
             }
           });
           html += "</tr>";
