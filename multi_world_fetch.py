@@ -19,7 +19,6 @@ WORLDS = ffxiv_servers = [
     "Ragnarok", "Sagittarius", "Spriggan",
     "Alpha", "Lich", "Odin", "Phoenix", "Raiden",
     "Shiva", "Twintania", "Zodiark",
-    "Innocence", "Pixie", "Titania", "Tycoon",
     # Japan
     "Aegis", "Atomos", "Carbuncle", "Garuda", "Gungnir",
     "Kujata", "Tonberry", "Typhon",
