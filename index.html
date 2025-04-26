@@ -447,7 +447,7 @@
         sortKey = null;
       }
       function setLastUpdate() {
-        fetch("LastUpdate.txt")
+        fetch(`LastUpdate.txt?t=${new Date().getTime()}`)
           .then((res) => res.text())
           .then((lastUpdate) => {
             const trimmedTimestamp = lastUpdate.split('.')[0];
