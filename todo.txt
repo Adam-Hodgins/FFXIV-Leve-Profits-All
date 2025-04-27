@@ -1,4 +1,4 @@
 Table Reordering/Customization
 Table Searching
 Mobile Support - Currently Doesnt work vertically, sometimes works horizontally
-Local Storage Persistence
+Local Storage Persistence - Probably move to a normal site at this point
