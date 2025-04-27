@@ -83,7 +83,7 @@
         align-items: center;
       }
       .controls label {
-        font-weight: 500;
+        font-weight: 200;
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -95,8 +95,119 @@
         background: var(--table-bg);
         color: var(--text);
         transition: border-color 0.3s;
+        width: 180px;
+        height: 43px;
+        font-family: "Poppins", sans-serif;
+        font-size: 1rem;
+        font-weight: 400;
       }
       .controls select:focus {
+        border-color: var(--primary);
+        outline: none;
+      }
+
+      .custom-select {
+        position: relative;
+        display: inline-block;
+        width: 180px;
+      }
+
+      .select-selected {
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: var(--table-bg);
+        color: var(--text);
+        cursor: pointer;
+        user-select: none;
+        font-family: "Poppins", sans-serif;
+        font-size: 1rem;
+        font-weight: 400;
+        height: 43px;
+        display: flex;
+        align-items: center;
+      }
+
+      .select-selected:after {
+        content: "▼";
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8em;
+      }
+
+      .select-selected.select-arrow-active:after {
+        content: "▲";
+      }
+
+      .select-items {
+        position: absolute;
+        background-color: var(--table-bg);
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        margin-top: 5px;
+        max-height: 300px;
+        overflow-y: auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .select-search {
+        padding: 8px;
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: var(--table-bg);
+      }
+
+      .select-search input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: var(--table-bg);
+        color: var(--text);
+        font-family: "Poppins", sans-serif;
+        font-size: 1rem;
+        font-weight: 400;
+      }
+
+      .select-items div {
+        padding: 8px 12px;
+        cursor: pointer;
+        font-family: "Poppins", sans-serif;
+        font-size: 1rem;
+        font-weight: 400;
+      }
+
+      .select-items div:hover {
+        background-color: var(--table-hover);
+      }
+
+      .select-hide {
+        display: none;
+      }
+
+      .search-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .search-input {
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: var(--table-bg);
+        color: var(--text);
+        width: 100%;
+        margin-bottom: 5px;
+      }
+
+      .search-input:focus {
         border-color: var(--primary);
         outline: none;
       }
@@ -178,8 +289,10 @@
       }
 
       .warning-section {
-        background-color: rgba(229, 57, 53, 0.1);
-        border: 2px solid #e53935;
+        /*background-color: rgba(229, 57, 53, 0.1);
+        border: 2px solid #e53935;*/
+        background-color: rgba(162, 228, 9, 0.1);
+        border: 2px solid #a2e409;
         border-radius: 4px;
         padding: 10px;
         margin: 20px auto;
@@ -231,13 +344,22 @@
           <h2 class="last-update">Last Update (UTC): <b><span id = "timestamp"></span></b></h2>
           <h2 class="next-update">Approximate Next Update (UTC): <b><span id = "nextUpdate"></span></b></h2>
         </div>
-        <h1>Leve Profits Explorer</h1>
+        <h1>Crafting Leve Profits Explorer</h1>
+        <h4>Train and make a profit on crafting leves</h4>
       </header>
 
       <div class="controls">
         <label>
           World:
-          <select id="worldSelect">
+          <div class="custom-select" id="worldSelectContainer">
+            <div class="select-selected" id="worldSelectDisplay">– select –</div>
+            <div class="select-items select-hide" id="worldSelectDropdown">
+              <div class="select-search">
+                <input type="text" id="worldSearch" placeholder="Search worlds...">
+              </div>
+            </div>
+          </div>
+          <select id="worldSelect" class="select-hide">
             <option value="">– select –</option>
             <option value="Adamantoise">Adamantoise</option>
             <option value="Aegis">Aegis</option>
@@ -324,7 +446,6 @@
             <option value="Zeromus">Zeromus</option>
             <option value="Zodiark">Zodiark</option>
             <option value="Zurvan">Zurvan</option>
-            <!-- … -->
           </select>
         </label>
 
@@ -362,7 +483,7 @@
         <div class="warning-header" id="warningHeader">Notice&nbsp;<span style="font-size: 0.7em;">(This application is still a work in progress)</span></div>
         <div class="warning-content">
           <ul>
-            <li style="font-size: 0.8em;">At this time, approximately 4% of batched api calls to Universalis fail (batches are 100 leves/batch/job/world); as a result <b>some data may be missing or incorrect.</b></li>
+            <li style="font-size: 0.8em;"> Data Fetching occurs roughly <b>every 3.5 hours</b></li>
           </ul>
         </div>
       </div>
@@ -402,6 +523,10 @@
       
       const worldEl = document.getElementById("worldSelect");
       const jobEl = document.getElementById("jobSelect");
+      const worldSelectContainer = document.getElementById("worldSelectContainer");
+      const worldSelectDisplay = document.getElementById("worldSelectDisplay");
+      const worldSelectDropdown = document.getElementById("worldSelectDropdown");
+      const worldSearch = document.getElementById("worldSearch");
       const container = document.getElementById("tableContainer");
       const timestamp = document.getElementById("timestamp");
       const nextUpdate = document.getElementById("nextUpdate");
@@ -598,6 +723,59 @@
           clearTable();
         }
       }
+
+      // Initialize the custom select
+      function initCustomSelect() {
+        const options = worldEl.options;
+        const dropdown = worldSelectDropdown;
+        
+        // Add all options to the dropdown
+        for (let i = 0; i < options.length; i++) {
+          const option = options[i];
+          const div = document.createElement("div");
+          div.innerHTML = option.text;
+          div.dataset.value = option.value;
+          div.addEventListener("click", function() {
+            worldEl.value = this.dataset.value;
+            worldSelectDisplay.innerHTML = this.innerHTML;
+            worldSelectDropdown.classList.add("select-hide");
+            worldSelectDisplay.classList.remove("select-arrow-active");
+            onSelectChange();
+          });
+          dropdown.appendChild(div);
+        }
+      }
+
+      // Toggle dropdown
+      worldSelectDisplay.addEventListener("click", function() {
+        this.classList.toggle("select-arrow-active");
+        worldSelectDropdown.classList.toggle("select-hide");
+        if (!worldSelectDropdown.classList.contains("select-hide")) {
+          worldSearch.focus();
+        }
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function(e) {
+        if (!worldSelectContainer.contains(e.target)) {
+          worldSelectDropdown.classList.add("select-hide");
+          worldSelectDisplay.classList.remove("select-arrow-active");
+        }
+      });
+
+      // Search functionality
+      worldSearch.addEventListener("input", function() {
+        const searchValue = this.value.toLowerCase();
+        const options = worldSelectDropdown.querySelectorAll("div:not(.select-search)");
+        
+        options.forEach(option => {
+          const text = option.textContent.toLowerCase();
+          option.style.display = text.includes(searchValue) ? "" : "none";
+        });
+      });
+
+      // Initialize the custom select
+      initCustomSelect();
 
       worldEl.addEventListener("change", onSelectChange);
       jobEl.addEventListener("change", onSelectChange);
