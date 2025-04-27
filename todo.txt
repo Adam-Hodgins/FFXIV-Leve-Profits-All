@@ -1,5 +1,4 @@
-Drop Down Searching to make it easier to find worlds
 Table Reordering/Customization
 Table Searching
-Local Storage Persistence
 Mobile Support - Currently Doesnt work vertically, sometimes works horizontally
+Local Storage Persistence
