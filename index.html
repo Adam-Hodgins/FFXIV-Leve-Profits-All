@@ -684,8 +684,8 @@
         if (!world || !job) return clearTable();
 
         try {
-          // 1. Fetch the .xlsx as ArrayBuffer
-          const url = `Sheets/${world}_Profits.xlsx`;
+          // 1. Fetch the .xlsx as ArrayBuffer with timestamp to prevent caching
+          const url = `Sheets/${world}_Profits.xlsx?t=${new Date().getTime()}`;
           const resp = await fetch(url);
           if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
           const buffer = await resp.arrayBuffer();
